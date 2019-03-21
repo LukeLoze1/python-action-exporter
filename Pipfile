@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+google-cloud-pubsub = "*"
+grpcio = "*"
+structlog = "*"
+"jinja2" = "*"
+"tonyg-rfc3339" = "*"
+pika = "*"
+xmltodict = "*"
+paramiko = "*"
+
+[dev-packages]
+codecov = "*"
+coverage = "*"
+"flake8" = "*"
+pytest-cov = "*"
+pytest = "*"
+paramiko = "*"
+
+[requires]
+python_version = "3.6"
