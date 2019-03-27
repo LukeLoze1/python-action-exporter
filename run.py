@@ -1,5 +1,6 @@
 import datetime
 import logging
+
 import pika
 import xmltodict as xmltodict
 from structlog import wrap_logger
@@ -10,20 +11,21 @@ from sftp_utility import SftpUtility
 logger = wrap_logger(logging.getLogger(__name__))
 
 
+sftp_utility = SftpUtility()
+
+
 def create_file_name():
     return datetime.datetime.now().strftime("%Y%m%d%H%M") + ".csv"
 
 
 def callback(ch, method, properties, body):
     csv_line = msg_body_to_csv(body)
-
     filename = create_file_name()
-
-    with SftpUtility() as sftp_utility:
-        sftp_utility.write_file_to_sftp(filename, csv_line)
+    sftp_utility.write_file_to_sftp(filename, csv_line)
 
 
 def main():
+    sftp_utility.__enter__()
     channel = init_rabbitmq()
 
     channel.basic_consume(callback,

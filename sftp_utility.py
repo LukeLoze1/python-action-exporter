@@ -1,6 +1,8 @@
-import paramiko as paramiko
+import time
 
+import paramiko as paramiko
 from config import Config
+
 
 class SftpUtility:
     def __init__(self):
@@ -12,6 +14,9 @@ class SftpUtility:
                                 password=Config.SFTP_PASSWORD,
                                 look_for_keys=False,
                                 timeout=120)
+        self._file_path = ""
+        self._filename = ""
+        self._file = None
 
     def __enter__(self):
         self._sftp_client = self.ssh_client.open_sftp()
@@ -22,7 +27,15 @@ class SftpUtility:
         self.ssh_client.close()
 
     def write_file_to_sftp(self, file_name, data):
-        file_path = Config.SFTP_DIR + '/' + file_name
-        file = self._sftp_client.open(file_path, "a", -1)
-        file.write(data)
-        file.flush()
+
+        if self._filename != file_name:
+            if self._filename != "":
+                print("flushing file")
+                self._file.flush()
+
+            self._filename = file_name
+            self._file_path = Config.SFTP_DIR + '/' + file_name
+            self._file = self._sftp_client.open(self._file_path, "a", -1)
+            print('writing to file: ', self._file_path)
+
+        self._file.write(data)
