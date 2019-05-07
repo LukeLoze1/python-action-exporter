@@ -8,7 +8,7 @@ from config import Config
 from sftp_utility import SftpUtility
 
 logger = wrap_logger(logging.getLogger(__name__))
-
+ 
 
 def create_file_name():
     return datetime.datetime.now().strftime("%Y%m%d%H%M") + ".csv"
