@@ -23,6 +23,8 @@ def callback(ch, method, properties, body):
         sftp_utility.write_file_to_sftp(filename, csv_line)
 
 
+
+
 def main():
     channel = init_rabbitmq()
 
